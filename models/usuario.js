@@ -30,7 +30,6 @@ const UsuarioSchema = Schema({
     },
     google: {
         type: Boolean,
-        required: false,
         default:false
     },
 })

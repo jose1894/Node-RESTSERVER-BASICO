@@ -10,14 +10,16 @@ const usuariosGet = async (req = request, res) => {
     const query = { estado: true}
 
     // Promise . all envia varias promesas simultaneas
-    const [ total, usuarios ] = await Promise.all([
-        Usuario.countDocuments( query ),
-        Usuario.find( query )
-                .skip( +desde )
-                .limit( +limite )
-    ])
+    // const [ total, usuarios ] = await Promise.all([
+    //     Usuario.countDocuments( query ),
+    //     Usuario.find( query )
+    //             .skip( +desde )
+    //             .limit( +limite )
+    // ])
 
-    res.send({
+    console.log(`Usuarios get`)
+
+    res.json({
         total,
         usuarios
     })
