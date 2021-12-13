@@ -13,6 +13,9 @@ const {
 const router =  Router()
 
 router.get('/', usuariosGet)
+// router.get('/', (req, res) => {
+//     console.log('Get API')
+// })
 
 router.post('/', [ 
     check( 'nombre', 'El nombre es obligatorio').not().isEmpty(),

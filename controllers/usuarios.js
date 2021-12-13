@@ -6,23 +6,25 @@ const Usuario = require('../models/usuario')
 
 const usuariosGet = async (req = request, res) => {
 
-    const { limite = 5, desde = 0 } = req.query
-    const query = { estado: true}
+    try {
+        const { limite = 5, desde = 0 } = req.query
+        const query = { estado: true}
 
-    // Promise . all envia varias promesas simultaneas
-    // const [ total, usuarios ] = await Promise.all([
-    //     Usuario.countDocuments( query ),
-    //     Usuario.find( query )
-    //             .skip( +desde )
-    //             .limit( +limite )
-    // ])
+        // Promise . all envia varias promesas simultaneas
+        const [ total, usuarios ] = await Promise.all([
+            Usuario.countDocuments( query ),
+            Usuario.find( query )
+                    .skip( +desde )
+                    .limit( +limite )
+        ])
 
-    console.log(`Usuarios get`)
-
-    res.json({
-        total,
-        usuarios
-    })
+        res.send({
+            total,
+            usuarios
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 const usuariosPost = async (req, res) => {
