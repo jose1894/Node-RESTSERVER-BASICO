@@ -1,6 +1,13 @@
 const { Router } = require( 'express' )
 const { check } = require('express-validator')
-const { validarCampos } = require('../middlewares/validar-campos')
+
+const {
+    validarCampos,
+    validarJWT,
+    esAdminRole,
+    tieneRole
+} = require( '../middlewares')
+
 const { esRolValido, existeEmail, existeUsuarioPorId } = require('../helpers/db-validators')
 
 const { 
@@ -13,9 +20,6 @@ const {
 const router =  Router()
 
 router.get('/', usuariosGet)
-// router.get('/', (req, res) => {
-//     console.log('Get API')
-// })
 
 router.post('/', [ 
     check( 'nombre', 'El nombre es obligatorio').not().isEmpty(),
@@ -35,9 +39,12 @@ router.put('/:id',[
 ], usuariosPut)
 
 router.delete('/:id',[
-    check('id', 'No es un ID valido').isMongoId(),
+    validarJWT,
+    // esAdminRole,
+    tieneRole( 'ADMIN_ROLE', 'VENTAS_ROLE'),
+    check( 'id', 'No es un ID valido').isMongoId(),
     check( 'id' ).custom( existeUsuarioPorId ),
-    validarCampos
+    // validarCampos
 ], usuariosDelete)
 
 router.patch('/', usuariosPatch)
